@@ -15,7 +15,7 @@ NavigationPartIdentifier=classlists
 Name=Lists by class
 Tooltip=List object by content class
 URL[]
-URL[default]=classlists/list/folder
+URL[default]=classlists/list
 Enabled[]
 Enabled[default]=true
 Enabled[browse]=false
