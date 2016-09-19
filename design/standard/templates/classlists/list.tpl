@@ -2,6 +2,9 @@
  * $Id: list.tpl 19 2011-06-22 20:04:04Z dpobel $
  * $HeadURL: http://svn.projects.ez.no/ezclasslists/tags/ezclasslists_1_2/ezclasslists/design/standard/templates/classlists/list.tpl $
  *}
+
+<div id="ezclasslists-main-content">
+
 {def
     $item_type = ezpreference( 'admin_classlists_limit' )
     $limit = min( $item_type, 3 )|choose( 10, 10, 25, 50 )
@@ -148,6 +151,8 @@
 </div>
 
 </form>
+</div>
+
 </div>
 
 {undef $filter_hash $filter_count_hash $nodes_count $nodes_list $confirm_js $move_to_trash}

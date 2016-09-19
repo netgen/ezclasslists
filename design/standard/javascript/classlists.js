@@ -1,7 +1,7 @@
 // $Id: classlists.js 18 2011-06-22 19:53:59Z dpobel $
 // $HeadURL: http://svn.projects.ez.no/ezclasslists/tags/ezclasslists_1_2/ezclasslists/design/standard/javascript/classlists.js $
 // TODO: rewrite this !
-var CLASSLISTS_MAIN_CONTENT_ID = 'fix';
+var CLASSLISTS_MAIN_CONTENT_ID = 'ezclasslists-main-content';
 
 function classListsFilter( e, options )
 {
