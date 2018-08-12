@@ -1,7 +1,18 @@
 {
     "name": "netgen/ezclasslists",
-    "type": "netgen-legacy-extension",
+    "description": "Adds a tab in the administration interface that lists objects by content class and lets you quickly edit or delete them.",
+    "type": "ezpublish-legacy-extension",
+    "license": "GPL-2.0-only",
+    "authors": [
+        {
+            "name": "Damien Pobel",
+            "homepage": "https://damien.pobel.fr"
+        }
+    ],
     "require": {
-        "netgen/netgen-legacy-installer": "*"
+        "ezsystems/ezpublish-legacy-installer": "^2.0.4"
+    },
+    "extra": {
+        "ezpublish-legacy-extension-name": "ezclasslists"
     }
 }
