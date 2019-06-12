@@ -7,10 +7,34 @@
 </div></div></div></div></div></div>
 
 <div class="box-bc"><div class="box-ml"><div class="box-mr"><div class="box-bl"><div class="box-br"><div class="box-content">
+
+    {def $root_node_id = '1'}
+    {if ezhttp('SelectedNodeIDArray', 'POST')}
+        {set $root_node_id = ezhttp('SelectedNodeIDArray', 'POST')}
+        {set $root_node_id = $root_node_id[0]}
+
+        {def $root_node = fetch(content, node, hash(node_id, $root_node_id ) )}
+    {/if}
+
+    <form method="post" action={'/content/action'|ezurl()} id="move">
+        {* @todo: if we've had previous root node id selection, for next one use this one as a starting node *}
+        <input type="hidden" name="ContentNodeID" value="2" />
+        <input type="hidden" name="ContentObjectID" value="2" />
+        <input type="submit" name="CustomBrowse" class="btn btn-primary" value="Select subtree" />
+    </form>
+
     <form action={$page_uri|ezurl()} method="post" id="class-list-menu-form">
     {def $classlist = fetch( 'class', 'list', hash( 'class_filter', ezini( 'ListSettings', 'IncludeClasses', 'lists.ini' ),
                                                     'sort_by', array( 'name', true() ) ) )
          $uri = ''}
+
+    {if $root_node}
+        <label>Selected subtree:</label>
+        <a href={$root_node.url_alias|ezurl()}>{$root_node.name|wash()}</a>
+    {/if}
+
+    <input type="hidden" name="RootNodeId" id="rootNodeId" value="{$root_node_id}" />
+
     <label for="classIdentifier">{'Classes list'|i18n( 'classlists/list' )}</label>
     <select name="classIdentifier" id="classIdentifier">
     {foreach $classlist as $class}
@@ -58,3 +82,4 @@ YUILoader.onSuccess = function() {ldelim}
 {rdelim};
 YUILoader.insert({ldelim}{rdelim}, 'js');
 </script>
+

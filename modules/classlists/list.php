@@ -68,6 +68,17 @@ if ( $http->hasPostVariable( 'sortOrder' ) )
     $hasPost = true;
 }
 
+$rootNodeId = 1;
+if ( isset( $Params['RootNodeId'] ) )
+{
+    $rootNodeId = $Params['RootNodeId'];
+}
+if ( $http->hasPostVariable( 'RootNodeId' ) )
+{
+    $rootNodeId = $http->postVariable( 'RootNodeId' );
+    $hasPost = true;
+}
+
 if ( isset( $Params['ajax'] ) )
 {
     $ajax = true;
@@ -170,6 +181,8 @@ else
 }
 
 $tpl->setVariable( 'view_parameters', array( 'offset' => $offset ) );
+
+$tpl->setVariable( 'root_node_id', $rootNodeId);
 
 if ( $ajax )
 {

@@ -42,8 +42,13 @@ function classListsBuildURL( baseURL )
     var classIdentfier = classListsGetSelectValue( 'classIdentifier' );
     var sortMethod = classListsGetSelectValue( 'sortMethod' );
     var sortOrder  = classListsGetSelectValue( 'sortOrder' );
-    return baseURL + '/' + classIdentfier + '/' + sortMethod + '/' + sortOrder + '/ajax';
 
+    var rootNodeId = document.getElementById('rootNodeId').value;
+    console.log(document.getElementById('rootNodeId'));
+    console.log(rootNodeId);
+    rootNodeId = rootNodeId !== '' ? rootNodeId : 1;
+
+    return baseURL + '/' + classIdentfier + '/' + sortMethod + '/' + sortOrder + '/' + rootNodeId + '/ajax';
 }
 
 function classListsGetSelectValue( selectID )

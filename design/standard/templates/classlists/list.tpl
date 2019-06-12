@@ -22,11 +22,12 @@
 }
 
 {if $class_identifier}
-    {set $filter_count_hash = hash( 'parent_node_id', 1,
+    {set $filter_count_hash = hash( 'parent_node_id', $root_node_id,
                                     'main_node_only', true(),
                                     'class_filter_type', include,
                                     'class_filter_array', array( $class_identifier ) )}
-    {set $filter_hash = hash( 'parent_node_id', 1,
+
+    {set $filter_hash = hash( 'parent_node_id', $root_node_id,
                               'sort_by', array( $sort_method, $sort_order ),
                               'class_filter_type', include,
                               'class_filter_array', array( $class_identifier ),
