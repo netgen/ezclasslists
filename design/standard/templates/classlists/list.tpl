@@ -13,12 +13,13 @@
                          'sort_by', array( $sort_method, $sort_order ),
                          'limit', $limit,
                          'offset', $view_parameters.offset )
-     $filter_count_hash = hash( 'parent_node_id', 1,
+     $filter_count_hash = hash( 'parent_node_id', $root_node_id,
                                 'main_node_only', true() )
      $nodes_count = 0
      $nodes_list = array()
      $confirm_js = ezini( 'DeleteSettings', 'ConfirmJavascript', 'lists.ini' )
      $move_to_trash = ezini( 'DeleteSettings', 'DefaultMoveToTrash', 'lists.ini' )
+     $root_node = fetch(content, node, hash('node_id', $root_node_id))
 }
 
 {if $class_identifier}
@@ -53,7 +54,9 @@
 
 
 <div class="box-header"><div class="box-tc"><div class="box-ml"><div class="box-mr"><div class="box-tl"><div class="box-tr">
-<h1 class="context-title">{'%count objects'|i18n( 'classlists/list', , hash( '%count', $nodes_count ) )}</h1>
+<h1 class="context-title">
+    {'%count objects'|i18n( 'classlists/list', , hash( '%count', $nodes_count ) )} ({'Subtree:'|i18n( 'classlists/list' )|concat(' ', $root_node.name)})
+</h1>
 <div class="header-subline"></div>
 </div></div></div></div></div></div>
 
