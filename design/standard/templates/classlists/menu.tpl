@@ -17,7 +17,6 @@
     {/if}
 
     <form method="post" action={'/content/action'|ezurl()} id="move">
-        {* @todo: if we've had previous root node id selection, for next one use this one as a starting node *}
         {if $root_node}
             <input type="hidden" name="ContentNodeID" value="{$root_node_id}" />
             <input type="hidden" name="ContentObjectID" value="{$root_node_id}" />

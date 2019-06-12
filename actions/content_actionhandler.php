@@ -9,14 +9,15 @@ function ezclasslists_ContentActionHandler( $module, $http, $objectID )
 
     if ( $module->isCurrentAction("CustomBrowse") )
     {
-        //$class = eZContentClass::fetchByIdentifier('image');
+        $startNode = $http->postVariable("ContentNodeID");
+
         eZContentBrowse::browse(
             array(
                 'action_name' => $module->currentAction(),
-                'description_template' => 'design:content/browse_move_node.tpl', // @todo: create custom template
-                'start_node' => '2',
-                'cancel_page' => '/classlists/list', // @todo: make it smarter if possible
-                'from_page' => "/classlists/list" ), // @todo: make it smarter if possible
+                'description_template' => 'design:classlists/browse.tpl', // @todo: create custom template
+                'start_node' => $startNode,
+                'cancel_page' => '/classlists/list',
+                'from_page' => "/classlists/list" ),
             $module
         );
 
