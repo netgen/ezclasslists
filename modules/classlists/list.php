@@ -79,6 +79,43 @@ if ( $http->hasPostVariable( 'RootNodeId' ) )
     $hasPost = true;
 }
 
+// dates and user are only applicable as post variables (ajax)
+$createdDateFrom = null;
+if ( $http->hasPostVariable( 'createdDateFrom' ) )
+{
+    $createdDateFrom = $http->postVariable( 'createdDateFrom' );
+    $createdDateFrom = DateTime::createFromFormat('Y-m-d H:i', $createdDateFrom . ' 00:00');
+    $createdDateFrom = $createdDateFrom->getTimestamp();
+    $hasPost = true;
+}
+
+$createdDateTo = null;
+if ( $http->hasPostVariable( 'createdDateTo' ) )
+{
+    $createdDateTo = $http->postVariable( 'createdDateTo' );
+    $createdDateTo = DateTime::createFromFormat('Y-m-d H:i', $createdDateTo . ' 00:00');
+    $createdDateTo = $createdDateTo->getTimestamp();
+    $hasPost = true;
+}
+
+$modifiedDateFrom = null;
+if ( $http->hasPostVariable( 'modifiedDateFrom' ) )
+{
+    $modifiedDateFrom = $http->postVariable( 'modifiedDateFrom' );
+    $modifiedDateFrom = DateTime::createFromFormat('Y-m-d H:i', $modifiedDateFrom . ' 00:00');
+    $modifiedDateFrom = $modifiedDateFrom->getTimestamp();
+    $hasPost = true;
+}
+
+$modifiedDateTo = null;
+if ( $http->hasPostVariable( 'modifiedDateTo' ) )
+{
+    $modifiedDateTo = $http->postVariable( 'modifiedDateTo' );
+    $modifiedDateTo = DateTime::createFromFormat('Y-m-d H:i', $modifiedDateTo . ' 00:00');
+    $modifiedDateTo = $modifiedDateTo->getTimestamp();
+    $hasPost = true;
+}
+
 if ( isset( $Params['ajax'] ) || $http->hasPostVariable('ajax') )
 {
     $ajax = true;
@@ -189,6 +226,10 @@ else
 $tpl->setVariable( 'view_parameters', array( 'offset' => $offset ) );
 
 $tpl->setVariable( 'root_node_id', $rootNodeId);
+$tpl->setVariable( 'created_date_from', $createdDateFrom);
+$tpl->setVariable( 'created_date_to', $createdDateTo);
+$tpl->setVariable( 'modified_date_from', $modifiedDateFrom);
+$tpl->setVariable( 'modified_date_to', $modifiedDateTo);
 
 if ( $ajax )
 {

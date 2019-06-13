@@ -48,7 +48,25 @@ function buildPostData()
     data.sortMethod = classListsGetSelectValue( 'sortMethod' );
     data.sortOrder  = classListsGetSelectValue( 'sortOrder' );
 
-    // @todo: get dates and add them optionally to the url
+    var createdDateFrom = $('#createdDateFrom').datepicker('getDate');
+    if (createdDateFrom !== null) {
+        data.createdDateFrom = $.datepicker.formatDate('yy-mm-dd', createdDateFrom);
+    }
+
+    var createdDateTo = $('#createdDateTo').datepicker('getDate');
+    if (createdDateTo !== null) {
+        data.createdDateTo = $.datepicker.formatDate('yy-mm-dd', createdDateTo);
+    }
+
+    var modifiedDateFrom = $('#modifiedDateFrom').datepicker('getDate');
+    if (modifiedDateFrom !== null) {
+        data.modifiedDateFrom = $.datepicker.formatDate('yy-mm-dd', modifiedDateFrom);
+    }
+
+    var modifiedDateTo = $('#modifiedDateTo').datepicker('getDate');
+    if (modifiedDateTo !== null) {
+        data.modifiedDateTo = $.datepicker.formatDate('yy-mm-dd', modifiedDateTo);
+    }
 
     var rootNodeId = document.getElementById('rootNodeId').value;
     data.rootNodeId = rootNodeId !== '' ? rootNodeId : 1;

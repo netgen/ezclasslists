@@ -14,7 +14,7 @@ function ezclasslists_ContentActionHandler( $module, $http, $objectID )
         eZContentBrowse::browse(
             array(
                 'action_name' => $module->currentAction(),
-                'description_template' => 'design:classlists/browse.tpl', // @todo: create custom template
+                'description_template' => 'design:classlists/browse.tpl',
                 'start_node' => $startNode,
                 'cancel_page' => '/classlists/list',
                 'from_page' => "/classlists/list" ),

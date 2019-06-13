@@ -72,11 +72,30 @@
         <option value="ascending"{cond( $sort_order, ' selected="selected"', '' )}>{'Ascending'|i18n( 'classlists/list' )}</option>
         <option value="descending"{cond( $sort_order|not, ' selected="selected"', '' )}>{'Descending'|i18n( 'classlists/list' )}</option>
     </select>
+
+    <label for="createdDateFrom">{'Created since'|i18n( 'classlists/list' )}</label>
+    <input type="text" name="createdDateFrom" id="createdDateFrom" />
+
+    <label for="createdDateTo">{'Created until'|i18n( 'classlists/list' )}</label>
+    <input type="text" name="createdDateTo" id="createdDateTo" />
+
+    <label for="modifiedDateFrom">{'Modified since'|i18n( 'classlists/list' )}</label>
+    <input type="text" name="modifiedDateFrom" id="modifiedDateFrom" />
+
+    <label for="modifiedDateTo">{'Modified until'|i18n( 'classlists/list' )}</label>
+    <input type="text" name="modifiedDateTo" id="modifiedDateTo" />
+
+
+
     <p>
         <input type="submit" class="button" value="{'Go'|i18n( 'classlists/list' )}" />
     </p>
+
     </form>
 </div></div></div></div></div></div>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
 <script type="text/javascript">
 YUILoader.require(['utilities', 'event']);
 YUILoader.onSuccess = function() {ldelim}
@@ -86,5 +105,16 @@ YUILoader.onSuccess = function() {ldelim}
 
 {rdelim};
 YUILoader.insert({ldelim}{rdelim}, 'js');
+
+{literal}
+
+$( function() {
+    $( "#createdDateFrom").datepicker();
+    $( "#createdDateTo").datepicker();
+    $( "#modifiedDateFrom").datepicker();
+    $( "#modifiedDateTo").datepicker();
+});
+{/literal}
+
 </script>
 
