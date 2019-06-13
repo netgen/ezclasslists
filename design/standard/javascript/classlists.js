@@ -21,9 +21,12 @@ function classListsFilter( e, options )
                                   content.innerHTML = o.responseText;
                               }
                    };
-    var classListsURL = classListsBuildURL( baseURL );
+
     classListsWait( imgLoader );
-    var transaction = YAHOO.util.Connect.asyncRequest( 'GET', classListsURL, callback );
+
+    data = buildPostData();
+    var transaction = YAHOO.util.Connect.asyncRequest( 'POST', baseURL, callback, data );
+
     YAHOO.util.Event.preventDefault( e );
 }
 
@@ -37,18 +40,27 @@ function classListsWait( imgLoader )
     content.innerHTML = '<p style="text-align:center;padding-top:4em;"><img src="' + imgLoader + '" alt="Loading..." /></p>';
 }
 
-function classListsBuildURL( baseURL )
+function buildPostData()
 {
-    var classIdentfier = classListsGetSelectValue( 'classIdentifier' );
-    var sortMethod = classListsGetSelectValue( 'sortMethod' );
-    var sortOrder  = classListsGetSelectValue( 'sortOrder' );
+    var data = {};
+
+    data.classIdentifier = classListsGetSelectValue( 'classIdentifier' );
+    data.sortMethod = classListsGetSelectValue( 'sortMethod' );
+    data.sortOrder  = classListsGetSelectValue( 'sortOrder' );
+
+    // @todo: get dates and add them optionally to the url
 
     var rootNodeId = document.getElementById('rootNodeId').value;
-    console.log(document.getElementById('rootNodeId'));
-    console.log(rootNodeId);
-    rootNodeId = rootNodeId !== '' ? rootNodeId : 1;
+    data.rootNodeId = rootNodeId !== '' ? rootNodeId : 1;
 
-    return baseURL + '/' + classIdentfier + '/' + sortMethod + '/' + sortOrder + '/' + rootNodeId + '/ajax';
+    data.ajax = true;
+
+    var dataString = '';
+    $.each(data, function(index, value) {
+        dataString += '&'+index+'='+value;
+    });
+
+    return dataString.slice(1); // slice is to remove leading '&'
 }
 
 function classListsGetSelectValue( selectID )

@@ -79,7 +79,7 @@ if ( $http->hasPostVariable( 'RootNodeId' ) )
     $hasPost = true;
 }
 
-if ( isset( $Params['ajax'] ) )
+if ( isset( $Params['ajax'] ) || $http->hasPostVariable('ajax') )
 {
     $ajax = true;
 }
@@ -87,9 +87,15 @@ if ( isset( $Params['ajax'] ) )
 if ( $hasPost && !$ajax )
 {
     // converting post variables into ordered parameters
-    $Module->redirectToView( 'list', array( $classIdentifier,
-                                            $sortMethod,
-                                            $sortOrder ) );
+    $Module->redirectToView(
+        'list',
+        array(
+            $classIdentifier,
+            $sortMethod,
+            $sortOrder,
+            $rootNodeId
+        )
+    );
 }
 
 $offset = $Params['Offset'];
