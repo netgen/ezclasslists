@@ -69,7 +69,7 @@ if ( $http->hasPostVariable( 'sortOrder' ) )
 }
 
 $rootNodeId = 1;
-if ( isset( $Params['RootNodeId'] ) )
+if ( isset( $Params['RootNodeId'] ) && $Params['RootNodeId'] !== false )
 {
     $rootNodeId = $Params['RootNodeId'];
 }
@@ -205,7 +205,8 @@ if ( $classIdentifier != '' )
     {
         $page_uri = trim( $Module->redirectionURI( 'classlists', 'list', array( $classIdentifier,
                                                                                 $sortMethod,
-                                                                                $sortOrder ) ), '/' );
+                                                                                $sortOrder
+                                                                        ) ), '/' );
         $path[] = array( 'url' => $page_uri,
                          'text' => ezpI18n::tr( 'classlists/list', '%classname objects',
                                                 false, array('%classname' => $classObject->attribute( 'name' ) ) ) );
@@ -230,7 +231,11 @@ else
     $tpl->setVariable( 'class_identifier', false );
 }
 
-$tpl->setVariable( 'view_parameters', array( 'offset' => $offset ) );
+$viewParameters = [
+    'offset' => $offset,
+    'rootNodeId' => $rootNodeId
+];
+$tpl->setVariable( 'view_parameters', $viewParameters );
 
 $tpl->setVariable( 'root_node_id', $rootNodeId);
 $tpl->setVariable( 'created_date_from', $createdDateFrom);
