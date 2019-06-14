@@ -88,7 +88,33 @@
 <h1 class="context-title">
     {'%count objects'|i18n( 'classlists/list', , hash( '%count', $nodes_count ) )} ({'Subtree:'|i18n( 'classlists/list' )|concat(' ', $root_node.name)})
 </h1>
-<div class="header-subline"></div>
+
+
+<div class="header-subline">{'Content in subtree by class'|i18n( 'classlists/list' )}</div>
+<div class="analysis-table">
+    {def $matched_classes = fetch(classlists,'subtree_class_list', hash('parent_id', 1))}
+
+    <table class="list" cellspacing="0">
+        <tbody>
+        <tr>
+            <th class="class">{'Identifier'|i18n( 'design/admin/node/view/full' )}</th>
+            <th class="count">{'Count'|i18n( 'design/admin/node/view/full' )}</th>
+        </tr>
+
+        {foreach $matched_classes as $class_data array( 'bgdark', 'bglight' ) as $style}
+            <tr class="{$style}">
+                <td class="class">
+                    <a href={concat( 'classlists/list/', $$class_data.class_identifier)|ezurl()}>{$class_data.class_identifier|wash()}</a>
+                </td>
+                <td class="count">
+                    {$class_data.count}
+                </td>
+            </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+
 </div></div></div></div></div></div>
 
 <div class="box-ml"><div class="box-mr"><div class="box-content">
