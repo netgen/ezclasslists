@@ -56,6 +56,7 @@
 
     <label for="classIdentifier">{'Classes list'|i18n( 'classlists/list' )}</label>
     <select name="classIdentifier" id="classIdentifier">
+        <option value="all_classes">{'Any class'|i18n( 'classlists/list' )}</option>
     {foreach $classlist as $class}
         <option value="{$class.identifier|wash()}"{cond( $class_identifier|eq( $class.identifier ), ' selected="selected"' , '' )}>{$class.name|wash()}</option>
     {/foreach}

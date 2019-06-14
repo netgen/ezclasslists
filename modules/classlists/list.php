@@ -39,6 +39,7 @@ if ( isset( $Params['classIdentifier'] ) )
 if ( $http->hasPostVariable( 'classIdentifier' ) )
 {
     $classIdentifier = $http->postVariable( 'classIdentifier' );
+    $classIdentifier = $classIdentifier === 'all_classes' ? '' : $classIdentifier;
     $hasPost = true;
 }
 if ( is_numeric( $classIdentifier ) )
