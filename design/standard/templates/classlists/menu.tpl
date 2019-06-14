@@ -2,6 +2,15 @@
  * $Id: menu.tpl 18 2011-06-22 19:53:59Z dpobel $
  * $HeadURL: http://svn.projects.ez.no/ezclasslists/tags/ezclasslists_1_2/ezclasslists/design/standard/templates/classlists/menu.tpl $
  *}
+
+{def $classlist = fetch( 'class', 'list',
+                                        hash(
+                                            'class_filter',
+                                            ezini( 'ListSettings', 'IncludeClasses', 'lists.ini' ),
+                                            'sort_by', array( 'name', true() ) )
+                                        )
+}
+
 <div class="box-header"><div class="box-tc"><div class="box-ml"><div class="box-mr"><div class="box-tl"><div class="box-tr">
 <h4>{'Options'|i18n( 'classlists/list' )}</h4>
 </div></div></div></div></div></div>
@@ -85,7 +94,32 @@
     <label for="modifiedDateTo">{'Modified until'|i18n( 'classlists/list' )}</label>
     <input type="text" name="modifiedDateTo" id="modifiedDateTo" />
 
+    {def $parent_node_ids = ezini( 'Users', 'UserGroupIds', 'lists.ini' )}
+    {def $users = array()}
+    {foreach $parent_node_ids as $parent_node_id}
+        {def $current_users = fetch(
+                        content,
+                        tree,
+                        hash(
+                            'parent_node_id', $parent_node_id,
+                            'sort_by', array( 'name', false() ),
+                            'class_filter_type', include,
+                            'class_filter_array', array( ezini( 'Users', 'UserClassIdentifiers', 'lists.ini' ) ),
+                            'main_node_only', true()
+                        )
+                    )
+        }
 
+        {set $users = $users|array_merge($current_users)}
+    {/foreach}
+
+    <label for="ownerUser">{'Owner'|i18n( 'classlists/list' )}</label>
+    <select name="ownerUser" id="ownerUser">
+        <option value="0">{*any user*}</option>
+        {foreach $users as $user}
+            <option value="{$user.contentobject_id}">{$user.name}</option>
+        {/foreach}
+    </select>
 
     <p>
         <input type="submit" class="button" value="{'Go'|i18n( 'classlists/list' )}" />

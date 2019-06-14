@@ -71,6 +71,8 @@ function buildPostData()
     var rootNodeId = document.getElementById('rootNodeId').value;
     data.rootNodeId = rootNodeId !== '' ? rootNodeId : 1;
 
+    data.ownerId = document.getElementById('ownerUser').value;
+
     data.ajax = true;
 
     var dataString = '';

@@ -22,24 +22,28 @@
      $root_node = fetch(content, node, hash('node_id', $root_node_id))
 }
 
-{def $published_array = array()}
+{def $attribute_filter_array = array()}
 {if $created_date_from}
-    {set $published_array = $published_array|append(array('published', '>=', $created_date_from))}
+    {set $attribute_filter_array = $attribute_filter_array|append(array('published', '>=', $created_date_from))}
 {/if}
 
 {if $created_date_to}
-    {set $published_array = $published_array|append(array('published', '<=', $created_date_to))}
+    {set $attribute_filter_array = $attribute_filter_array|append(array('published', '<=', $created_date_to))}
 {/if}
 
 {if $modified_date_from}
-    {set $published_array = $published_array|append(array('modified', '>=', $modified_date_from))}
+    {set $attribute_filter_array = $attribute_filter_array|append(array('modified', '>=', $modified_date_from))}
 {/if}
 
 {if $modified_date_to}
-    {set $published_array = $published_array|append(array('modified', '<=', $modified_date_to))}
+    {set $attribute_filter_array = $attribute_filter_array|append(array('modified', '<=', $modified_date_to))}
 {/if}
 
-{def $attribute_filter = merge(array('AND'), $published_array)}
+{if $owner_user_id|gt(0)}
+    {set $attribute_filter_array = $attribute_filter_array|append(array('owner', '=', $owner_user_id))}
+{/if}
+
+{def $attribute_filter = merge(array('AND'), $attribute_filter_array)}
 
 {if $class_identifier}
     {set $filter_count_hash = hash( 'parent_node_id', $root_node_id,
@@ -56,7 +60,7 @@
                               'offset', $view_parameters.offset )}
 {/if}
 
-{if $published_array|count()|gt(0)}
+{if $attribute_filter_array|count()|gt(0)}
     {set $filter_count_hash = $filter_count_hash|merge(hash('attribute_filter', $attribute_filter))}
     {set $filter_hash = $filter_hash|merge(hash('attribute_filter', $attribute_filter))}
 {/if}

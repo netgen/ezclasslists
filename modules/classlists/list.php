@@ -116,6 +116,13 @@ if ( $http->hasPostVariable( 'modifiedDateTo' ) )
     $hasPost = true;
 }
 
+$ownerUserId = 0;
+if ( $http->hasPostVariable( 'ownerId' ) )
+{
+    $ownerUserId= $http->postVariable( 'ownerId' );
+    $hasPost = true;
+}
+
 if ( isset( $Params['ajax'] ) || $http->hasPostVariable('ajax') )
 {
     $ajax = true;
@@ -230,6 +237,7 @@ $tpl->setVariable( 'created_date_from', $createdDateFrom);
 $tpl->setVariable( 'created_date_to', $createdDateTo);
 $tpl->setVariable( 'modified_date_from', $modifiedDateFrom);
 $tpl->setVariable( 'modified_date_to', $modifiedDateTo);
+$tpl->setVariable('owner_user_id', $ownerUserId);
 
 if ( $ajax )
 {
