@@ -153,6 +153,10 @@ $( function() {
     $( "#createdDateTo").datepicker();
     $( "#modifiedDateFrom").datepicker();
     $( "#modifiedDateTo").datepicker();
+
+    $('.main-content').on("click",'#analysis-table-wrapper',function(){
+        $('#analysis-table').toggle();
+    });
 });
 {/literal}
 
