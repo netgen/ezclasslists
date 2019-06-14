@@ -73,9 +73,9 @@ if ( isset( $Params['RootNodeId'] ) )
 {
     $rootNodeId = $Params['RootNodeId'];
 }
-if ( $http->hasPostVariable( 'RootNodeId' ) )
+if ( $http->hasPostVariable( 'rootNodeId' ) )
 {
-    $rootNodeId = $http->postVariable( 'RootNodeId' );
+    $rootNodeId = $http->postVariable( 'rootNodeId' );
     $hasPost = true;
 }
 

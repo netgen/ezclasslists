@@ -8,7 +8,7 @@
 {def
     $item_type = ezpreference( 'admin_classlists_limit' )
     $limit = min( $item_type, 3 )|choose( 10, 10, 25, 50 )
-    $filter_hash = hash( 'parent_node_id', 1,
+    $filter_hash = hash( 'parent_node_id', $root_node_id,
                          'main_node_only', true(),
                          'sort_by', array( $sort_method, $sort_order ),
                          'limit', $limit,
@@ -92,7 +92,7 @@
 
 <div class="header-subline">{'Content in subtree by class'|i18n( 'classlists/list' )}</div>
 <div class="analysis-table">
-    {def $matched_classes = fetch(classlists,'subtree_class_list', hash('parent_id', 1))}
+    {def $matched_classes = fetch(classlists,'subtree_class_list', hash('parent_id', $root_node_id))}
 
     <table class="list" cellspacing="0">
         <tbody>
