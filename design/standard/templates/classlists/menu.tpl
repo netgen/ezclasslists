@@ -18,6 +18,11 @@
 <div class="box-bc"><div class="box-ml"><div class="box-mr"><div class="box-bl"><div class="box-br"><div class="box-content">
 
     {def $root_node_id = '1'}
+    {if not($view_parameters.rootNodeId|eq(null))}
+        {set $root_node_id = $view_parameters.rootNodeId}
+
+        {def $root_node = fetch(content, node, hash(node_id, $root_node_id ) )}
+
     {if ezhttp( 'SelectedNodeIDArray', 'POST' )}
         {set $root_node_id = ezhttp( 'SelectedNodeIDArray', 'POST' )}
         {set $root_node_id = $root_node_id[0]}
