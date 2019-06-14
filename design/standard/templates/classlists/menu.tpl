@@ -83,16 +83,16 @@
     </select>
 
     <label for="createdDateFrom">{'Created since'|i18n( 'classlists/list' )}</label>
-    <input type="text" name="createdDateFrom" id="createdDateFrom" />
+    <input type="text" name="createdDateFrom" id="createdDateFrom" {if $view_parameters.createdDateFrom}value="{$view_parameters.createdDateFrom|datetime('custom', '%d/%m/%Y')}"{/if} />
 
     <label for="createdDateTo">{'Created until'|i18n( 'classlists/list' )}</label>
-    <input type="text" name="createdDateTo" id="createdDateTo" />
+    <input type="text" name="createdDateTo" id="createdDateTo" {if $view_parameters.createdDateTo}value="{$view_parameters.createdDateTo|datetime('custom', '%d/%m/%Y')}"{/if} />
 
     <label for="modifiedDateFrom">{'Modified since'|i18n( 'classlists/list' )}</label>
-    <input type="text" name="modifiedDateFrom" id="modifiedDateFrom" />
+    <input type="text" name="modifiedDateFrom" id="modifiedDateFrom" {if $view_parameters.modifiedDateFrom}value="{$view_parameters.modifiedDateFrom|datetime('custom', '%d/%m/%Y')}"{/if} />
 
     <label for="modifiedDateTo">{'Modified until'|i18n( 'classlists/list' )}</label>
-    <input type="text" name="modifiedDateTo" id="modifiedDateTo" />
+    <input type="text" name="modifiedDateTo" id="modifiedDateTo" {if $view_parameters.modifiedDateTo}value="{$view_parameters.modifiedDateTo|datetime('custom', '%d/%m/%Y')}"{/if} />
 
     {def $parent_node_ids = ezini( 'Users', 'UserGroupIds', 'lists.ini' )}
     {def $users = array()}

@@ -79,8 +79,11 @@ if ( $http->hasPostVariable( 'rootNodeId' ) )
     $hasPost = true;
 }
 
-// dates and user are only applicable as post variables (ajax)
 $createdDateFrom = null;
+if ( isset( $Params['createdDateFrom'] ) && $Params['createdDateFrom'] !== false )
+{
+    $createdDateFrom = $Params['createdDateFrom'];
+}
 if ( $http->hasPostVariable( 'createdDateFrom' ) )
 {
     $createdDateFrom = $http->postVariable( 'createdDateFrom' );
@@ -90,6 +93,10 @@ if ( $http->hasPostVariable( 'createdDateFrom' ) )
 }
 
 $createdDateTo = null;
+if ( isset( $Params['createdDateTo'] ) && $Params['createdDateTo'] !== false )
+{
+    $createdDateTo = $Params['createdDateTo'];
+}
 if ( $http->hasPostVariable( 'createdDateTo' ) )
 {
     $createdDateTo = $http->postVariable( 'createdDateTo' );
@@ -99,6 +106,10 @@ if ( $http->hasPostVariable( 'createdDateTo' ) )
 }
 
 $modifiedDateFrom = null;
+if ( isset( $Params['modifiedDateFrom'] ) && $Params['modifiedDateFrom'] !== false )
+{
+    $modifiedDateFrom = $Params['modifiedDateFrom'];
+}
 if ( $http->hasPostVariable( 'modifiedDateFrom' ) )
 {
     $modifiedDateFrom = $http->postVariable( 'modifiedDateFrom' );
@@ -108,6 +119,10 @@ if ( $http->hasPostVariable( 'modifiedDateFrom' ) )
 }
 
 $modifiedDateTo = null;
+if ( isset( $Params['modifiedDateTo'] ) && $Params['modifiedDateTo'] !== false )
+{
+    $modifiedDateTo = $Params['modifiedDateTo'];
+}
 if ( $http->hasPostVariable( 'modifiedDateTo' ) )
 {
     $modifiedDateTo = $http->postVariable( 'modifiedDateTo' );
@@ -117,6 +132,10 @@ if ( $http->hasPostVariable( 'modifiedDateTo' ) )
 }
 
 $ownerUserId = 0;
+if ( isset( $Params['ownerId'] ) && $Params['ownerId'] !== false )
+{
+    $ownerId = $Params['ownerId'];
+}
 if ( $http->hasPostVariable( 'ownerId' ) )
 {
     $ownerUserId= $http->postVariable( 'ownerId' );
@@ -137,7 +156,12 @@ if ( $hasPost && !$ajax )
             $classIdentifier,
             $sortMethod,
             $sortOrder,
-            $rootNodeId
+            $rootNodeId,
+            $createdDateFrom,
+            $createdDateTo,
+            $modifiedDateFrom,
+            $modifiedDateTo,
+            $ownerUserId
         )
     );
 }
@@ -233,7 +257,12 @@ else
 
 $viewParameters = [
     'offset' => $offset,
-    'rootNodeId' => $rootNodeId
+    'rootNodeId' => $rootNodeId,
+    'createdDateFrom' => $createdDateFrom,
+    'createdDateTo' => $createdDateTo,
+    'modifiedDateFrom' => $modifiedDateFrom,
+    'modifiedDateTo' => $modifiedDateTo,
+    'ownerId' => $ownerUserId
 ];
 $tpl->setVariable( 'view_parameters', $viewParameters );
 
