@@ -5,6 +5,10 @@
 
 <div id="ezclasslists-main-content">
 
+{if ezhttp_hasvariable( 'SelectedNodeIDArray', 'POST' )}
+    {set $root_node_id = ezhttp('SelectedNodeIDArray', 'POST' ).0}
+{/if}
+
 {def
     $item_type = ezpreference( 'admin_classlists_limit' )
     $limit = min( $item_type, 3 )|choose( 10, 10, 25, 50 )
