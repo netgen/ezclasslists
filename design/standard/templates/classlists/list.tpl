@@ -27,6 +27,7 @@
 }
 
 {def $attribute_filter_array = array()}
+
 {if $created_date_from}
     {set $attribute_filter_array = $attribute_filter_array|append(array('published', '>=', $created_date_from))}
 {/if}
@@ -105,10 +106,17 @@
                 <th class="count">{'Count'|i18n( 'design/admin/node/view/full' )}</th>
             </tr>
 
+            {def $viewParametersString = ''}
+            {foreach $view_parameters as $key => $value}
+                {if $value}
+                    {set $viewParametersString = concat($viewParametersString, '/', '(', $key, ')', '/', $value)}
+                {/if}
+            {/foreach}
+
             {foreach $matched_classes as $class_data array( 'bgdark', 'bglight' ) as $style}
                 <tr class="{$style}">
                     <td class="class">
-                        <a href={concat( 'classlists/list/', $$class_data.class_identifier)|ezurl()}>{$class_data.class_identifier|wash()}</a>
+                        <a href={concat( 'classlists/list/', $$class_data.class_identifier, $viewParametersString)|ezurl()}>{$class_data.class_identifier|wash()}</a>
                     </td>
                     <td class="count">
                         {$class_data.count}
