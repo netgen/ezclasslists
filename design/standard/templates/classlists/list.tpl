@@ -13,12 +13,12 @@
     $item_type = ezpreference( 'admin_classlists_limit' )
     $limit = min( $item_type, 3 )|choose( 10, 10, 25, 50 )
     $filter_hash = hash( 'parent_node_id', $root_node_id,
-                         'main_node_only', true(),
+                         'main_node_only', false(),
                          'sort_by', array( $sort_method, $sort_order ),
                          'limit', $limit,
                          'offset', $view_parameters.offset )
      $filter_count_hash = hash( 'parent_node_id', $root_node_id,
-                                'main_node_only', true() )
+                                'main_node_only', false() )
      $nodes_count = 0
      $nodes_list = array()
      $confirm_js = ezini( 'DeleteSettings', 'ConfirmJavascript', 'lists.ini' )
@@ -52,7 +52,7 @@
 
 {if $class_identifier}
     {set $filter_count_hash = hash( 'parent_node_id', $root_node_id,
-                                    'main_node_only', true(),
+                                    'main_node_only', false(),
                                     'class_filter_type', include,
                                     'class_filter_array', array( $class_identifier ) )}
 
@@ -60,7 +60,7 @@
                               'sort_by', array( $sort_method, $sort_order ),
                               'class_filter_type', include,
                               'class_filter_array', array( $class_identifier ),
-                              'main_node_only', true(),
+                              'main_node_only', false(),
                               'limit', $limit,
                               'offset', $view_parameters.offset )}
 {/if}
