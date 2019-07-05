@@ -79,6 +79,10 @@ if ( $http->hasPostVariable( 'rootNodeId' ) )
     $rootNodeId = $http->postVariable( 'rootNodeId' );
     $hasPost = true;
 }
+if ( $http->hasPostVariable('SelectedNodeIDArray' ) )
+{
+    $rootNodeId = $http->postVariable( 'SelectedNodeIDArray' )[0];
+}
 
 $createdDateFrom = null;
 if ( isset( $Params['createdDateFrom'] ) && $Params['createdDateFrom'] !== false )
