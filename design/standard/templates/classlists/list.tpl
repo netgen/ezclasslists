@@ -173,25 +173,24 @@
     <th class="edit">&nbsp;</th>
 </tr>
 
-
 {foreach $nodes_list as $k => $node sequence array( 'bgdark', 'bglight' ) as $style}
-<tr class="{$style}">
-<td>
-    <input name="DeleteIDArray[]" value="{$node.node_id}" type="checkbox"{if $node.can_remove|not()} disabled="disabled"{/if} />
-</td>
-<td>
-    <a href={$node.url_alias|ezurl()}>{$node.name|wash()}</a>
-</td>
-<td class="class">
-    <a href={concat( 'classlists/list/', $node.class_identifier )|ezurl()}>{$node.class_name|wash()}</a>
-</td>
-<td class="modified">
-    {$node.object.modified|l10n(datetime)}
-</td>
-<td class="edit">
-    <a href={concat( '/content/edit/', $node.object.id )|ezurl()}><img src={'edit.gif'|ezimage()} alt="{'Modify'|i18n( 'classlists/list')}" /></a>
-</td>
-</tr>
+    <tr class="{$style}">
+    <td>
+        <input name="DeleteIDArray[]" value="{$node.node_id}" type="checkbox"{if $node.can_remove|not()} disabled="disabled"{/if} />
+    </td>
+    <td>
+        <a href={$node.url_alias|ezurl()}>{$node.name|wash()} {if $node.is_invisible|eq(true())}({'Hidden'|i18n( 'classlists/list')}){/if}</a>
+    </td>
+    <td class="class">
+        <a href={concat( 'classlists/list/', $node.class_identifier )|ezurl()}>{$node.class_name|wash()}</a>
+    </td>
+    <td class="modified">
+        {$node.object.modified|l10n(datetime)}
+    </td>
+    <td class="edit">
+        <a href={concat( '/content/edit/', $node.object.id )|ezurl()}><img src={'edit.gif'|ezimage()} alt="{'Modify'|i18n( 'classlists/list')}" /></a>
+    </td>
+    </tr>
 {/foreach}
 </tbody></table>
 </div>
