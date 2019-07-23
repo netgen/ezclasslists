@@ -119,11 +119,15 @@
         {set $users = $users|array_merge($current_users)}
     {/foreach}
 
+    {def $selectedOwnerId = false()}
+    {if $view_parameters.ownerId}
+        {set $selectedOwnerId = $view_parameters.ownerId}
+    {/if}
     <label for="ownerUser">{'Owner'|i18n( 'classlists/list' )}</label>
     <select name="ownerUser" id="ownerUser">
         <option value="0">{*any user*}</option>
         {foreach $users as $user}
-            <option value="{$user.contentobject_id}">{$user.name}</option>
+            <option value="{$user.contentobject_id}" {if and($selectedOwnerId, eq($selectedOwnerId, $user.contentobject_id))}selected="selected"{/if}>{$user.name}</option>
         {/foreach}
     </select>
 

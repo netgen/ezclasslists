@@ -139,7 +139,7 @@ if ( $http->hasPostVariable( 'modifiedDateTo' ) )
 $ownerUserId = 0;
 if ( isset( $Params['ownerId'] ) && $Params['ownerId'] !== false )
 {
-    $ownerId = $Params['ownerId'];
+    $ownerUserId = $Params['ownerId'];
 }
 if ( $http->hasPostVariable( 'ownerId' ) )
 {
@@ -276,7 +276,7 @@ $tpl->setVariable( 'created_date_from', $createdDateFrom);
 $tpl->setVariable( 'created_date_to', $createdDateTo);
 $tpl->setVariable( 'modified_date_from', $modifiedDateFrom);
 $tpl->setVariable( 'modified_date_to', $modifiedDateTo);
-$tpl->setVariable('owner_user_id', $ownerUserId);
+$tpl->setVariable( 'owner_user_id', $ownerUserId);
 
 if ( $ajax )
 {
