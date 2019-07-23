@@ -11,9 +11,7 @@
                                         )
 }
 
-<div class="box-header"><div class="box-tc"><div class="box-ml"><div class="box-mr"><div class="box-tl"><div class="box-tr">
-<h4>{'Options'|i18n( 'classlists/list' )}</h4>
-</div></div></div></div></div></div>
+<div class="box-header"></div>
 
 <div class="box-bc"><div class="box-ml"><div class="box-mr"><div class="box-bl"><div class="box-br"><div class="box-content">
 
@@ -39,7 +37,7 @@
             <input type="hidden" name="ContentObjectID" value="2" />
         {/if}
 
-        <input type="submit" name="CustomBrowse" class="btn btn-primary" value="Select subtree" />
+        <input type="submit" name=" " class="btn btn-primary" value="{'Select content subtree'|i18n( 'classlists/list' )}" />
     </form>
 
     <form action={$page_uri|ezurl()} method="post" id="class-list-menu-form">
@@ -48,7 +46,7 @@
          $uri = ''}
 
     {if $root_node}
-        <label>{'Selected subtree:'|i18n( 'classlists/list' )}</label>
+        <label>{'Selected content subtree:'|i18n( 'classlists/list' )}</label>
         <a href={$root_node.url_alias|ezurl()}>{$root_node.name|wash()}</a>
     {/if}
 
@@ -57,6 +55,8 @@
     <div class="separator">
         <hr>
     </div>
+
+    <h4>{'Filtering options'|i18n( 'classlists/list' )}</h4>
 
     <label for="classIdentifier">{'Classes list'|i18n( 'classlists/list' )}</label>
     <select name="classIdentifier" id="classIdentifier">
