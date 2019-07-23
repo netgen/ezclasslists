@@ -54,6 +54,10 @@
 
     <input type="hidden" name="RootNodeId" id="rootNodeId" value="{$root_node_id}" />
 
+    <div class="separator">
+        <hr>
+    </div>
+
     <label for="classIdentifier">{'Classes list'|i18n( 'classlists/list' )}</label>
     <select name="classIdentifier" id="classIdentifier">
         <option value="all_classes">{'Any class'|i18n( 'classlists/list' )}</option>
