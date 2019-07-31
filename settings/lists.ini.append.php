@@ -9,7 +9,7 @@ ConfirmJavascript=enabled
 DefaultMoveToTrash=enabled
 
 [ListSettings]
-# DefaultSortMethod should be one of the following values : 
+# DefaultSortMethod should be one of the following values :
 #  - depth
 #  - modified
 #  - name
@@ -29,6 +29,10 @@ IncludeClasses[]
 #IncludeClasses[]=folder
 #IncludeClasses[]=image
 
-
+[Users]
+UserGroupIds[]
+UserGroupIds[]=13
+UserClassIdentifiers=[]
+UserClassIdentifiers=user
 
 */ ?>

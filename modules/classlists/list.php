@@ -39,6 +39,7 @@ if ( isset( $Params['classIdentifier'] ) )
 if ( $http->hasPostVariable( 'classIdentifier' ) )
 {
     $classIdentifier = $http->postVariable( 'classIdentifier' );
+    $classIdentifier = $classIdentifier === 'all_classes' ? '' : $classIdentifier;
     $hasPost = true;
 }
 if ( is_numeric( $classIdentifier ) )
@@ -68,7 +69,85 @@ if ( $http->hasPostVariable( 'sortOrder' ) )
     $hasPost = true;
 }
 
-if ( isset( $Params['ajax'] ) )
+$rootNodeId = 1;
+if ( isset( $Params['RootNodeId'] ) && $Params['RootNodeId'] !== false )
+{
+    $rootNodeId = $Params['RootNodeId'];
+}
+if ( $http->hasPostVariable( 'rootNodeId' ) )
+{
+    $rootNodeId = $http->postVariable( 'rootNodeId' );
+    $hasPost = true;
+}
+if ( $http->hasPostVariable('SelectedNodeIDArray' ) )
+{
+    $rootNodeId = $http->postVariable( 'SelectedNodeIDArray' )[0];
+}
+
+$createdDateFrom = null;
+if ( isset( $Params['createdDateFrom'] ) && $Params['createdDateFrom'] !== false )
+{
+    $createdDateFrom = $Params['createdDateFrom'];
+}
+if ( $http->hasPostVariable( 'createdDateFrom' ) )
+{
+    $createdDateFrom = $http->postVariable( 'createdDateFrom' );
+    $createdDateFrom = DateTime::createFromFormat('Y-m-d H:i', $createdDateFrom . ' 00:00');
+    $createdDateFrom = $createdDateFrom->getTimestamp();
+    $hasPost = true;
+}
+
+$createdDateTo = null;
+if ( isset( $Params['createdDateTo'] ) && $Params['createdDateTo'] !== false )
+{
+    $createdDateTo = $Params['createdDateTo'];
+}
+if ( $http->hasPostVariable( 'createdDateTo' ) )
+{
+    $createdDateTo = $http->postVariable( 'createdDateTo' );
+    $createdDateTo = DateTime::createFromFormat('Y-m-d H:i', $createdDateTo . ' 00:00');
+    $createdDateTo = $createdDateTo->getTimestamp();
+    $hasPost = true;
+}
+
+$modifiedDateFrom = null;
+if ( isset( $Params['modifiedDateFrom'] ) && $Params['modifiedDateFrom'] !== false )
+{
+    $modifiedDateFrom = $Params['modifiedDateFrom'];
+}
+if ( $http->hasPostVariable( 'modifiedDateFrom' ) )
+{
+    $modifiedDateFrom = $http->postVariable( 'modifiedDateFrom' );
+    $modifiedDateFrom = DateTime::createFromFormat('Y-m-d H:i', $modifiedDateFrom . ' 00:00');
+    $modifiedDateFrom = $modifiedDateFrom->getTimestamp();
+    $hasPost = true;
+}
+
+$modifiedDateTo = null;
+if ( isset( $Params['modifiedDateTo'] ) && $Params['modifiedDateTo'] !== false )
+{
+    $modifiedDateTo = $Params['modifiedDateTo'];
+}
+if ( $http->hasPostVariable( 'modifiedDateTo' ) )
+{
+    $modifiedDateTo = $http->postVariable( 'modifiedDateTo' );
+    $modifiedDateTo = DateTime::createFromFormat('Y-m-d H:i', $modifiedDateTo . ' 00:00');
+    $modifiedDateTo = $modifiedDateTo->getTimestamp();
+    $hasPost = true;
+}
+
+$ownerUserId = 0;
+if ( isset( $Params['ownerId'] ) && $Params['ownerId'] !== false )
+{
+    $ownerUserId = $Params['ownerId'];
+}
+if ( $http->hasPostVariable( 'ownerId' ) )
+{
+    $ownerUserId= $http->postVariable( 'ownerId' );
+    $hasPost = true;
+}
+
+if ( isset( $Params['ajax'] ) || $http->hasPostVariable('ajax') )
 {
     $ajax = true;
 }
@@ -76,9 +155,20 @@ if ( isset( $Params['ajax'] ) )
 if ( $hasPost && !$ajax )
 {
     // converting post variables into ordered parameters
-    $Module->redirectToView( 'list', array( $classIdentifier,
-                                            $sortMethod,
-                                            $sortOrder ) );
+    $Module->redirectToView(
+        'list',
+        array(
+            $classIdentifier,
+            $sortMethod,
+            $sortOrder,
+            $rootNodeId,
+            $createdDateFrom,
+            $createdDateTo,
+            $modifiedDateFrom,
+            $modifiedDateTo,
+            $ownerUserId
+        )
+    );
 }
 
 $offset = $Params['Offset'];
@@ -144,7 +234,8 @@ if ( $classIdentifier != '' )
     {
         $page_uri = trim( $Module->redirectionURI( 'classlists', 'list', array( $classIdentifier,
                                                                                 $sortMethod,
-                                                                                $sortOrder ) ), '/' );
+                                                                                $sortOrder
+                                                                        ) ), '/' );
         $path[] = array( 'url' => $page_uri,
                          'text' => ezpI18n::tr( 'classlists/list', '%classname objects',
                                                 false, array('%classname' => $classObject->attribute( 'name' ) ) ) );
@@ -169,7 +260,23 @@ else
     $tpl->setVariable( 'class_identifier', false );
 }
 
-$tpl->setVariable( 'view_parameters', array( 'offset' => $offset ) );
+$viewParameters = [
+    'offset' => $offset,
+    'rootNodeId' => $rootNodeId,
+    'createdDateFrom' => $createdDateFrom,
+    'createdDateTo' => $createdDateTo,
+    'modifiedDateFrom' => $modifiedDateFrom,
+    'modifiedDateTo' => $modifiedDateTo,
+    'ownerId' => $ownerUserId
+];
+$tpl->setVariable( 'view_parameters', $viewParameters );
+
+$tpl->setVariable( 'root_node_id', $rootNodeId);
+$tpl->setVariable( 'created_date_from', $createdDateFrom);
+$tpl->setVariable( 'created_date_to', $createdDateTo);
+$tpl->setVariable( 'modified_date_from', $modifiedDateFrom);
+$tpl->setVariable( 'modified_date_to', $modifiedDateTo);
+$tpl->setVariable( 'owner_user_id', $ownerUserId);
 
 if ( $ajax )
 {

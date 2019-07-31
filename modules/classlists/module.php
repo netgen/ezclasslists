@@ -32,8 +32,16 @@ $ViewList['list'] = array( 'script' => 'list.php',
                            'functions' => array( 'read' ),
                            'default_navigation_part' => 'classlists',
                            'ui_context' => 'view',
-                           'params' => array ( 'classIdentifier', 'sortMethod', 'sortOrder', 'ajax' ),
-                           'unordered_params' => array('offset' => 'Offset'),
+                           'params' => array ( 'classIdentifier', 'sortMethod', 'sortOrder', 'RootNodeId', 'ajax' ),
+                           'unordered_params' => array(
+                               'offset' => 'Offset',
+                               'rootNodeId' => 'RootNodeId',
+                               'createdDateFrom' => 'createdDateFrom',
+                               'createdDateTo' => 'createdDateTo',
+                               'modifiedDateFrom' => 'modifiedDateFrom',
+                               'modifiedDateTo' => 'modifiedDateTo',
+                               'ownerId' => 'ownerId'
+                           ),
                            'single_post_actions' => array( 'RemoveButton' => 'Remove' ),
                            'post_action_parameters' => array( 'Remove' => array( 'DeleteIDArray' => 'DeleteIDArray' ) ) );
 

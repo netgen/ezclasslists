@@ -5,38 +5,76 @@
 
 <div id="ezclasslists-main-content">
 
+{if ezhttp_hasvariable( 'SelectedNodeIDArray', 'POST' )}
+    {set $root_node_id = ezhttp('SelectedNodeIDArray', 'POST' ).0}
+{/if}
+
 {def
     $item_type = ezpreference( 'admin_classlists_limit' )
     $limit = min( $item_type, 3 )|choose( 10, 10, 25, 50 )
-    $filter_hash = hash( 'parent_node_id', 1,
-                         'main_node_only', true(),
+    $filter_hash = hash( 'parent_node_id', $root_node_id,
+                         'main_node_only', false(),
                          'sort_by', array( $sort_method, $sort_order ),
                          'limit', $limit,
                          'offset', $view_parameters.offset )
-     $filter_count_hash = hash( 'parent_node_id', 1,
-                                'main_node_only', true() )
+     $filter_count_hash = hash( 'parent_node_id', $root_node_id,
+                                'main_node_only', false() )
      $nodes_count = 0
      $nodes_list = array()
      $confirm_js = ezini( 'DeleteSettings', 'ConfirmJavascript', 'lists.ini' )
      $move_to_trash = ezini( 'DeleteSettings', 'DefaultMoveToTrash', 'lists.ini' )
+     $root_node = fetch(content, node, hash('node_id', $root_node_id))
 }
 
+{def $attribute_filter_array = array()}
+
+{if $created_date_from}
+    {set $attribute_filter_array = $attribute_filter_array|append(array('published', '>=', $created_date_from))}
+{/if}
+
+{if $created_date_to}
+    {set $attribute_filter_array = $attribute_filter_array|append(array('published', '<=', $created_date_to))}
+{/if}
+
+{if $modified_date_from}
+    {set $attribute_filter_array = $attribute_filter_array|append(array('modified', '>=', $modified_date_from))}
+{/if}
+
+{if $modified_date_to}
+    {set $attribute_filter_array = $attribute_filter_array|append(array('modified', '<=', $modified_date_to))}
+{/if}
+
+{if $owner_user_id|gt(0)}
+    {set $attribute_filter_array = $attribute_filter_array|append(array('owner', '=', $owner_user_id))}
+{/if}
+
+{def $attribute_filter = merge(array('AND'), $attribute_filter_array)}
+
 {if $class_identifier}
-    {set $filter_count_hash = hash( 'parent_node_id', 1,
-                                    'main_node_only', true(),
+    {set $filter_count_hash = hash( 'parent_node_id', $root_node_id,
+                                    'main_node_only', false(),
                                     'class_filter_type', include,
                                     'class_filter_array', array( $class_identifier ) )}
-    {set $filter_hash = hash( 'parent_node_id', 1,
+
+    {set $filter_hash = hash( 'parent_node_id', $root_node_id,
                               'sort_by', array( $sort_method, $sort_order ),
                               'class_filter_type', include,
                               'class_filter_array', array( $class_identifier ),
-                              'main_node_only', true(),
+                              'main_node_only', false(),
                               'limit', $limit,
                               'offset', $view_parameters.offset )}
 {/if}
+
+{if $attribute_filter_array|count()|gt(0)}
+    {set $filter_count_hash = $filter_count_hash|merge(hash('attribute_filter', $attribute_filter))}
+    {set $filter_hash = $filter_hash|merge(hash('attribute_filter', $attribute_filter))}
+{/if}
+
 {debug-log msg='template fetch filter' var=$filter_hash}
+
 {set $nodes_count = fetch( content, tree_count, $filter_count_hash )}
 {set $nodes_list  = fetch( content, tree, $filter_hash )}
+
 {if is_set( $remove_count )}
     <div class="message-feedback">
         <h2>{'%remove_count objects deleted'|i18n( 'classlists/list', , hash( '%remove_count', $remove_count ) )}</h2>
@@ -52,8 +90,44 @@
 
 
 <div class="box-header"><div class="box-tc"><div class="box-ml"><div class="box-mr"><div class="box-tl"><div class="box-tr">
-<h1 class="context-title">{'%count objects'|i18n( 'classlists/list', , hash( '%count', $nodes_count ) )}</h1>
-<div class="header-subline"></div>
+<h1 class="context-title">
+    {'%count objects'|i18n( 'classlists/list', , hash( '%count', $nodes_count ) )} ({'Subtree:'|i18n( 'classlists/list' )|concat(' ', $root_node.name)})
+</h1>
+
+<div class="analysis-table-wrapper" id="analysis-table-wrapper">
+    <div class="header-subline"><a href="#">{'Content in subtree by class'|i18n( 'classlists/list' )}</a></div>
+    <div class="analysis-table" id="analysis-table" style="display: none">
+        {def $matched_classes = fetch(classlists,'subtree_class_list', hash('parent_id', $root_node_id))}
+
+        <table class="list" cellspacing="0">
+            <tbody>
+            <tr>
+                <th class="class">{'Identifier'|i18n( 'design/admin/node/view/full' )}</th>
+                <th class="count">{'Count'|i18n( 'design/admin/node/view/full' )}</th>
+            </tr>
+
+            {def $viewParametersString = ''}
+            {foreach $view_parameters as $key => $value}
+                {if $value}
+                    {set $viewParametersString = concat($viewParametersString, '/', '(', $key, ')', '/', $value)}
+                {/if}
+            {/foreach}
+
+            {foreach $matched_classes as $class_data array( 'bgdark', 'bglight' ) as $style}
+                <tr class="{$style}">
+                    <td class="class">
+                        <a href={concat( 'classlists/list/', $$class_data.class_identifier, $viewParametersString)|ezurl()}>{$class_data.class_identifier|wash()}</a>
+                    </td>
+                    <td class="count">
+                        {$class_data.count}
+                    </td>
+                </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+</div>
+
 </div></div></div></div></div></div>
 
 <div class="box-ml"><div class="box-mr"><div class="box-content">
@@ -99,25 +173,24 @@
     <th class="edit">&nbsp;</th>
 </tr>
 
-
 {foreach $nodes_list as $k => $node sequence array( 'bgdark', 'bglight' ) as $style}
-<tr class="{$style}">
-<td>
-    <input name="DeleteIDArray[]" value="{$node.node_id}" type="checkbox"{if $node.can_remove|not()} disabled="disabled"{/if} />
-</td>
-<td>
-    <a href={$node.url_alias|ezurl()}>{$node.name|wash()}</a>
-</td>
-<td class="class">
-    <a href={concat( 'classlists/list/', $node.class_identifier )|ezurl()}>{$node.class_name|wash()}</a>
-</td>
-<td class="modified">
-    {$node.object.modified|l10n(datetime)}
-</td>
-<td class="edit">
-    <a href={concat( '/content/edit/', $node.object.id )|ezurl()}><img src={'edit.gif'|ezimage()} alt="{'Modify'|i18n( 'classlists/list')}" /></a>
-</td>
-</tr>
+    <tr class="{$style}">
+    <td>
+        <input name="DeleteIDArray[]" value="{$node.node_id}" type="checkbox"{if $node.can_remove|not()} disabled="disabled"{/if} />
+    </td>
+    <td>
+        <a href={$node.url_alias|ezurl()}>{$node.name|wash()} {if $node.is_invisible|eq(true())}({'Hidden'|i18n( 'classlists/list')}){/if}</a>
+    </td>
+    <td class="class">
+        <a href={concat( 'classlists/list/', $node.class_identifier )|ezurl()}>{$node.class_name|wash()}</a>
+    </td>
+    <td class="modified">
+        {$node.object.modified|l10n(datetime)}
+    </td>
+    <td class="edit">
+        <a href={concat( '/content/edit/', $node.object.id )|ezurl()}><img src={'edit.gif'|ezimage()} alt="{'Modify'|i18n( 'classlists/list')}" /></a>
+    </td>
+    </tr>
 {/foreach}
 </tbody></table>
 </div>
